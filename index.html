@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <meta charset="UTF-8" />
+    <title>도서 목록</title>
+    <!-- 부트스트랩 CDN 링크 추가 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body style="background-color: rgb(175, 175, 175)">
+    <div id="wrap">
+      <div id="container">
+        <h1>도서 목록</h1>
+
+        <!-- 도서 추가 폼 -->
+        <form id="addBookForm">
+          <div class="row mb-3">
+            <label for="titleInput" class="col-sm-2 col-form-label">제목</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="text" id="titleInput" />
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="authorInput" class="col-sm-2 col-form-label"
+              >저자</label
+            >
+            <div class="col-sm-10">
+              <input class="form-control" type="text" id="authorInput" />
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onClick="addBookToList();"
+          >
+            등록
+          </button>
+        </form>
+
+        <ul id="bookList">
+          <!-- 여기에 도서 목록이 표시될 것입니다 -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- 부트스트랩 JS CDN 링크 추가 -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      // 도서 추가 함수
+      const addBookToList = () => {
+        const title = document.getElementById("titleInput").value;
+        const author = document.getElementById("authorInput").value;
+
+        if (title === "" || author === "") {
+          alert("제목과 저자를 모두 입력해주세요.");
+          return;
+        }
+
+        // 입력된 값으로 새로운 도서 아이템 생성
+        const newBook = document.createElement("li");
+        newBook.textContent = `${title} - ${author}`;
+
+        // 수정 버튼 생성
+        const editButton = document.createElement("button");
+        editButton.textContent = "수정";
+        editButton.onclick = function () {
+          const newTitle = prompt("새 제목을 입력하세요:", title);
+          const newAuthor = prompt("새 저자를 입력하세요:", author);
+
+          if (newTitle && newAuthor) {
+            newBook.textContent = `${newTitle} - ${newAuthor}`;
+          }
+
+          // 수정 후 다시 버튼 추가
+          newBook.appendChild(editButton);
+          newBook.appendChild(deleteButton);
+        };
+        newBook.appendChild(editButton);
+
+        // 삭제 버튼 생성
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "삭제";
+        deleteButton.onclick = function () {
+          newBook.remove();
+        };
+        newBook.appendChild(deleteButton);
+
+        // 새로운 도서 아이템을 목록에 추가
+        const bookList = document.getElementById("bookList");
+        bookList.appendChild(newBook);
+
+        // 입력 필드 초기화
+        document.getElementById("titleInput").value = "";
+        document.getElementById("authorInput").value = "";
+      };
+    </script>
+  </body>
+</html>
